@@ -34,9 +34,6 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        var isRunning: Boolean = false
-        var prog: Int = 0
-
 
 //            progressBar.max = Integer.parseInt(inputMax.getText().toString());
 
@@ -45,16 +42,12 @@ class MainActivity : AppCompatActivity() {
 //            if (isRunning == false) {
 //                isRunning = true
 //
-//                fixedRateTimer("timer", false, 0L, 1000){
-//                    this@MainActivity.runOnUiThread {
-//                        if (prog<progressBar.max) {
-//                            prog = prog+1
-//                            progressBar.progress = prog
-//                        } else {
-//
-//                        }
-//                    }
-//                }
+
+
+
+
+
+
 //            }
 //        }
     }
