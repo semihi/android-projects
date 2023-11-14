@@ -18,8 +18,8 @@ class MainActivity : AppCompatActivity() {
         btnStart.setOnClickListener {
             val intent = Intent(this,TimerActivity::class.java)
             intent.putExtra("targetTime",numberPicker.value)
-            finish()
             startActivity(intent)
+            finish()
         }
     }
 }

@@ -3,6 +3,7 @@ package com.example.solvingtimer
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_timer.btnNext
 import kotlinx.android.synthetic.main.activity_timer.btnStartPause
@@ -12,6 +13,10 @@ import kotlinx.android.synthetic.main.activity_timer.progressBarThird
 import kotlinx.android.synthetic.main.activity_timer.textNumQuestion
 import kotlinx.android.synthetic.main.activity_timer.textTimer
 import kotlinx.android.synthetic.main.activity_timer.textTotalTime
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
+import androidx.constraintlayout.widget.Constraints
+import kotlinx.android.synthetic.main.activity_timer.myConstraintLayout
 
 class TimerActivity : AppCompatActivity() {
 
@@ -86,6 +91,11 @@ class TimerActivity : AppCompatActivity() {
             timeQsStarted = System.currentTimeMillis()
             timePaused = System.currentTimeMillis()
             timeQsPaused = System.currentTimeMillis()
+            val constraintSet = ConstraintSet()
+            constraintSet.clone(myConstraintLayout)
+            constraintSet.clear(R.id.btnStartPause, ConstraintSet.END)
+            constraintSet.applyTo(myConstraintLayout)
+            btnNext.visibility = View.VISIBLE
             continueTimer()
         }
 
