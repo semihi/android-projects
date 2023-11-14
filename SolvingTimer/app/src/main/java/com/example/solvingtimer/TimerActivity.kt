@@ -2,6 +2,7 @@ package com.example.solvingtimer
 
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_timer.btnNext
 import kotlinx.android.synthetic.main.activity_timer.btnStartPause
@@ -20,65 +21,96 @@ class TimerActivity : AppCompatActivity() {
 
         var intent = intent
         var targetTime = intent.getIntExtra("targetTime",60)
-        progressBarFirst.max=targetTime
-        progressBarSecond.max=targetTime
-        progressBarThird.max=targetTime
+        progressBarFirst.max=targetTime*1000
+        progressBarSecond.max=targetTime*1000
+        progressBarThird.max=targetTime*1000
 
-        var running: Boolean = false
-        var seconds: Int = 0
-        var Startion: Int = 0
+
         val handler = Handler()
-        var minutes = 0
-        var secs = 0
-        var numQuestion = 1
+        var running: Boolean = false
+        var numQuestion: Int = 1
+        var timeStarted: Long = 0
+        var timePaused: Long = 0
+        var timeQsStarted: Long = 0
+        var timeQsPaused: Long = 0
+        var durRunning: Long
+        var durPaused: Long = 0
+        var durQsPaused: Long = 0
+        var durQsRunning: Long
 
-        fun startTimer() {
+
+        fun continueTimer() {
             btnStartPause.text = "Duraklat"
             running = true
-            seconds--
+            durPaused = System.currentTimeMillis() - timePaused
+            durQsPaused = System.currentTimeMillis() - timeQsPaused
+
+
             handler.post(object : Runnable {
                 override fun run() {
-                    if (running) {
-                        seconds++
-                        minutes = (seconds-Startion) / 60
-                        secs = (seconds-Startion) % 60
 
-                        textTimer.text = String.format("%2d:%02d", minutes, secs)
-                        progressBarFirst.progress = seconds-Startion
-                        progressBarSecond.progress = seconds-Startion-targetTime
-                        progressBarThird.progress = seconds-Startion-2*targetTime
+                    durRunning = (System.currentTimeMillis() - timeStarted - durPaused)/1000
+                    durQsRunning = (System.currentTimeMillis() - timeQsStarted - durQsPaused)/1000
 
-                        textTotalTime.text = String.format("%02d:%02d", seconds/60, seconds % 60)
 
-                        handler.postDelayed(this, 1000)
+                    textTimer.text = String.format("%2d:%02d", (durQsRunning.toInt()) / 60, (durQsRunning.toInt()) % 60)
+                    textTotalTime.text = String.format("%02d:%02d", (durRunning.toInt()) / 60, (durRunning.toInt()) % 60)
+
+                    handler.postDelayed(this, 1000)
+                }
+            })
+
+            handler.post(object : Runnable {
+                override fun run() {
+                    if (running){
+                        progressBarFirst.progress = (System.currentTimeMillis() - timeQsStarted - durQsPaused).toInt()
+                        progressBarSecond.progress =(System.currentTimeMillis() - timeQsStarted - durQsPaused).toInt() - 1000*targetTime
+                        progressBarThird.progress = (System.currentTimeMillis() - timeQsStarted - durQsPaused).toInt() - 2000*targetTime
+                        handler.postDelayed(this, 10)
                     }
                 }
             })
+
         }
 
         fun pauseTimer() {
             btnStartPause.text = "Devam Et"
             running = false
             handler.removeCallbacksAndMessages(null)
+            timePaused = System.currentTimeMillis()
+            timeQsPaused = System.currentTimeMillis()
         }
 
-        btnNext.setOnClickListener {
-            pauseTimer()
-            startTimer()
-
-            numQuestion++
-            textNumQuestion.text = numQuestion.toString()+". Soru"
-            Startion = seconds+1
-            minutes = 0
-            secs = 0
+        fun startTimer() {
+            timeStarted = System.currentTimeMillis()
+            timeQsStarted = System.currentTimeMillis()
+            timePaused = System.currentTimeMillis()
+            timeQsPaused = System.currentTimeMillis()
+            continueTimer()
         }
+
 
         btnStartPause.setOnClickListener {
             if (!running) {
-                startTimer()
+                if (timeStarted == 0L) {
+                    startTimer()
+                } else {
+                    continueTimer()
+                }
             } else {
                 pauseTimer()
             }
         }
+
+        btnNext.setOnClickListener {
+            pauseTimer()
+            continueTimer()
+
+            numQuestion++
+            textNumQuestion.text = numQuestion.toString()+". Soru"
+            timeQsStarted = System.currentTimeMillis()
+        }
+
+
     }
 }
