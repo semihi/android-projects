@@ -9,9 +9,9 @@
                 android:thickness="16dp"
                 android:useLevel="true">
                 <gradient
-                    android:angle="315"
-                    android:endColor="#873434"
-                    android:startColor="#830000" />
+                    android:angle="0"
+                    android:endColor="#573535"
+                    android:startColor="#6E0000" />
             </shape>
         </rotate>
     </item>
