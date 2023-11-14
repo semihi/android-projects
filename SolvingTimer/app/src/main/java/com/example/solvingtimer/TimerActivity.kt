@@ -42,8 +42,8 @@ class TimerActivity : AppCompatActivity() {
         fun continueTimer() {
             btnStartPause.text = "Duraklat"
             running = true
-            durPaused = System.currentTimeMillis() - timePaused
-            durQsPaused = System.currentTimeMillis() - timeQsPaused
+            durPaused += System.currentTimeMillis() - timePaused
+            durQsPaused += System.currentTimeMillis() - timeQsPaused
 
 
             handler.post(object : Runnable {
@@ -106,6 +106,7 @@ class TimerActivity : AppCompatActivity() {
             pauseTimer()
             continueTimer()
 
+            durQsPaused = 0
             numQuestion++
             textNumQuestion.text = numQuestion.toString()+". Soru"
             timeQsStarted = System.currentTimeMillis()
