@@ -113,8 +113,12 @@ class TimerActivity : AppCompatActivity() {
         }
 
         btnNext.setOnClickListener {
-            pauseTimer()
-            continueTimer()
+            if (running){
+                pauseTimer()
+                continueTimer()
+            } else {
+                continueTimer()
+            }
 
             durQsPaused = 0
             numQuestion++
