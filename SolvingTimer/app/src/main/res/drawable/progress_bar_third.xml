@@ -10,8 +10,8 @@
                 android:useLevel="true">
                 <gradient
                     android:angle="0"
-                    android:endColor="#573535"
-                    android:startColor="#6E0000" />
+                    android:endColor="#642828"
+                    android:startColor="#A02800" />
             </shape>
         </rotate>
     </item>
